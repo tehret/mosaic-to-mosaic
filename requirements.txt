@@ -1,0 +1,7 @@
+scikit-image
+numpy
+torch
+tqdm
+torchvision
+setproctitle
+iio
