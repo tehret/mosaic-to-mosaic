@@ -274,6 +274,9 @@ def demosaick_load_model(net_path=None, noiselevel=0.0, xtrans=False):
 
 
 def main(args):
+
+    if not args.real:
+        args.noise /= 255.
     # Load the network for the specific application
     model_ref = demosaick_load_model(args.net_path, args.noise, xtrans=(args.mosaic_type == 'xtrans') )
     if args.gpu:
