@@ -294,10 +294,10 @@ def main(args):
         raise ValueError('Input type not handled: {}'.format(dtype))
 
     # if integers make floats
-    if dtype in [np.uint8, np.uint16]:
-        Iref = _uint2float(Iref)
-    else:
+    if args.real:
         Iref /= 65535.
+    else:
+        Iref /= 255.
 
     if args.linear_input:
         print ("  - Input is linear, mapping to sRGB for processing")
@@ -397,8 +397,11 @@ def main(args):
         print ('  PSNR = {:.1f} dB, time = {} ms'.format(p, int(runtime)))
     else:
         print ('  - raw image without groundtruth, bypassing metric')
-    out = _float2uint(R, dtype)
-    out = R*65535.
+
+    if args.real:
+        out = R*65535.
+    else:
+        out = R*255.
 
     # Write output image
     #skimage.io.imsave(args.output, out)
@@ -418,6 +421,7 @@ if __name__ == "__main__":
     parser.add_argument('--tile_size', type=int, default=512, help='split the input into tiles of this size.')
     parser.add_argument('--gpu', dest='gpu', action='store_true', help='use the GPU for processing.')
     parser.add_argument('--mosaic_type', type=str, default='bayer', choices=['bayer', 'xtrans'], help='type of mosaick (xtrans or bayer)')
+    parser.add_argument('--real', dest='real', action='store_true', help='Specify if the input is a 16bit bayer.')
 
     parser.add_argument('--linear_input', dest='linear_input', action='store_true')
 
