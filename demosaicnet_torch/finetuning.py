@@ -16,7 +16,7 @@ import skimage.io
 import tifffile
 from scipy.ndimage.morphology import binary_dilation
 import time
-import piio
+import iio as piio
 from skimage.measure import compare_ssim
 
 import demosaic.modules as modules
@@ -259,9 +259,9 @@ def blind_denoising(**args):
                     im2 = np.expand_dims(im2, 0)
                     im2 = np.expand_dims(im2, 0)
                     if args['real']:
-                        im1 /= 65535.
+                        im2 /= 65535.
                     else:
-                        im1 /= 255.
+                        im2 /= 255.
 
                 prev_frame_var = torch.Tensor(im2).cuda().repeat(1, 3, 1, 1)
                 B,C,H,W = prev_frame_var.size()
@@ -294,9 +294,9 @@ def blind_denoising(**args):
         noisy = np.expand_dims(noisy, 0)
         noisy = np.expand_dims(noisy, 0)
         if args['real']:
-            im1 /= 65535.
+            noisy /= 65535.
         else:
-            im1 /= 255.
+            noisy /= 255.
 
     H = noisy.shape[2]
     W = noisy.shape[3]
@@ -317,6 +317,10 @@ def blind_denoising(**args):
         quant_ssim = compare_ssim(ref, out, data_range=1., multichannel=True)
         print(quant_psnr, quant_ssim)
 
+    if args['real']:
+        out *= 65535.
+    else:
+        out *= 255.
     piio.write(args['output'], out)
 
     if args['output_network'] is not None:
@@ -344,7 +348,7 @@ if __name__ == "__main__":
                         help='sigma')
     parser.add_argument('--real', dest='real', action='store_true',
                         help='Used when processing real 16bits data')
-    parser.add_argument("--output", type=str, default='out.tiff'
+    parser.add_argument("--output", type=str, default='out.tiff',
                         help='path to output image')
     parser.add_argument("--ref", type=str,
                         help='path to ref image')

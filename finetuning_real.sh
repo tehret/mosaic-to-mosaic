@@ -1,5 +1,5 @@
 #!/bin/bash
-MINV_PATH=../mInverse_bayer/inverse_compositional_algorithm
+MINV_PATH=mInverse_bayer/inverse_compositional_algorithm
 
 # Image 0 is always considered as the reference image
 D=${1:-"burst_%02d.png"}
@@ -16,5 +16,10 @@ do
     done
 done
 
+# Process the reference image without fine-tuning
+python demosaicnet_torch/demosaicnet.py --input `printf $D 0` --output gharbi.tiff --noise $N --real
 # Process the burst
-python ../demosaicnet_torch/finetuning.py --input $D --input_p params_%d_%d.txt --frames $L --lr 1e-4 --iter 20 --sigma $N
+python demosaicnet_torch/finetuning.py --input $D --input_p params_%d_%d.txt --frames $L --lr 1e-4 --iter 20 --sigma $N --real
+
+# Clean things up
+rm *.txt
