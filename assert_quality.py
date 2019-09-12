@@ -4,11 +4,6 @@ import numpy as np
 import iio
 from skimage.measure import compare_ssim
 
-os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
-
-here = os.path.dirname(__file__)
-
 def psnr(img1, img2, peak=1):
     '''
     Computes the PSNR 'metric' between two images assumed to be in the range [0,1]
