@@ -19,10 +19,10 @@ do
 done
 
 # Process the reference image without fine-tuning
-python demosaicnet_torch/demosaicnet.py --input `printf $D 0` --output gharbi.tiff --noise $N
+python demosaicnet_torch/demosaicnet.py --input burst_0.tiff --output gharbi.tiff --noise $N
 
 # Process the burst
-python demosaicnet_torch/finetuning.py --input $D --input_p params_%d_%d.txt --frames $L --lr 1e-4 --iter 20 --sigma $N
+python demosaicnet_torch/finetuning.py --input burst_%d.tiff --input_p params_%d_%d.txt --frames $L --lr 1e-4 --iter 20 --sigma $N
 
 # Compute PSNR + SSIM
 python assert_quality --input gharbi.tiff --ref $D

@@ -155,7 +155,7 @@ if __name__ == "__main__":
     parser.add_argument('--im', type=str, default='image.png', help='Image used to generate the burst')
     parser.add_argument('--len', type=int, default=1, help='Length of the burst generated')
     parser.add_argument('--sigma', type=int, default=0, help='Noise standard deviation added to the burst')
-    parser.add_argument('--out', type=str, default='burst_%03d.tiff', help='Output burst')
+    parser.add_argument('--out', type=str, default='burst_%d.tiff', help='Output burst')
     parser.add_argument('--p', type=str, default='transf.txt', help='File containing the transform used to generate the burst')
     parser.add_argument('--clip', type=bool, default=False, help='Clip the values of the generated burst')
     args = parser.parse_args()
