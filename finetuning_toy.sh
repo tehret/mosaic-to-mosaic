@@ -14,7 +14,7 @@ for i in `seq 0 $((L-1))`;
 do
     for j in `seq 0 $((L-1))`;
     do
-        $MINV_PATH `printf $D $j` `printf $D $i` -t 6 -f params_${i}_${j}.txt
+        $MINV_PATH `printf burst_%d.tiff $j` `printf burst_%d.tiff $i` -t 6 -f params_${i}_${j}.txt
     done
 done
 

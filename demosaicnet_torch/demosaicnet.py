@@ -432,9 +432,6 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    if args.noise > NOISE_LEVELS[1] or args.noise < NOISE_LEVELS[0]:
-        msg = 'The model was trained on noise levels in [{}, {}]'.format(
-                NOISE_LEVELS[0], NOISE_LEVELS[1])
-        raise ValueError(msg)
+    args.noise = min(max(args.noise, NOISE_LEVELS[0]), NOISE_LEVELS[1])
 
     main(args)
