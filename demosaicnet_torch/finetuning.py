@@ -221,9 +221,6 @@ def blind_denoising(**args):
 
     # Define loss
     lr = args['lr']
-    weight_decay = 0.00001
-    batch_size = 180
-
     criterion = WarpedLoss()
     criterion.cuda()
     optimizer = optim.Adam(model.parameters(), lr=lr)
@@ -348,7 +345,7 @@ if __name__ == "__main__":
                         help='sigma')
     parser.add_argument('--real', dest='real', action='store_true',
                         help='Used when processing real 16bits data')
-    parser.add_argument("--output", type=str, default='out.tiff',
+    parser.add_argument("--output", type=str, default='gharbi_finetuned.tiff',
                         help='path to output image')
     parser.add_argument("--ref", type=str,
                         help='path to ref image')

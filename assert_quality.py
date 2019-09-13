@@ -15,7 +15,7 @@ def assert_quality(**args):
     imres = iio.read(args['input']).squeeze().astype(np.float)
     imref = iio.read(args['ref']).squeeze().astype(np.float)
 
-    quant = psnr(imres, ref, 255.)
+    quant = psnr(imres, imref, 255.)
     quant_ssim = compare_ssim(imres, imref, data_range=255., multichannel=True)
     print(quant, quant_ssim)
 
