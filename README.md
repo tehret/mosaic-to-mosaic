@@ -22,6 +22,7 @@ We provide two scripts, one to reproduce the results on synthetic data (generate
 burst from a single reference image) and one to reproduce the results on real data coming from the HDR+ dataset.
 
 In order to reproduce the synthetic results of the paper, the `finetuning_toy.sh` script has to be used.
+
 ```finetuning_toy.sh image.png 10 5```
 
 There are three input arguments:
@@ -30,10 +31,12 @@ There are three input arguments:
 * the noise level to be added (between 0 and 255).
 
 An example of command on one of the image of the kodak dataset:
+
 ```finetuning_toy.sh data/kodak/kodim19.png 10 5```
 
 
 In order to reproduce the results of the supplementary material, the `finetuning_real.sh` script has to be used.
+
 ```finetuning_real.sh burst_%d.tiff 7 0.03```
 
 There are three input arguments:
