@@ -275,8 +275,6 @@ def demosaick_load_model(net_path=None, noiselevel=0.0, xtrans=False):
 
 def main(args):
 
-    if not args.real:
-        args.noise /= 255.
     # Load the network for the specific application
     model_ref = demosaick_load_model(args.net_path, args.noise, xtrans=(args.mosaic_type == 'xtrans') )
     if args.gpu:
@@ -432,6 +430,8 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    if not args.real:
+        args.noise /= 255.
     args.noise = min(max(args.noise, NOISE_LEVELS[0]), NOISE_LEVELS[1])
 
     main(args)
