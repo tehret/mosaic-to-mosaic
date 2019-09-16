@@ -1,4 +1,4 @@
-:!\ Warning: Everything might not be fully functional just yet
+/!\ Warning: Everything might not be fully functional just yet
 
 IMPLEMENTATION OF JOINT DEMOSAICKING AND DENOISING BY FINE-TUNING OF BURSTS OF RAW IMAGES
 =========================================================================================
