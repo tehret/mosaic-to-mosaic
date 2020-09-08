@@ -347,8 +347,6 @@ if __name__ == "__main__":
                         help='number of time the learning is done on a given frame')
     parser.add_argument("--frames", type=int, default=10,
                         help='number of image in the burst')
-    parser.add_argument("--net", type=str, default="/mnt/adisk/tehret/demosaicking/out/dmcnn_44_B2Bres.pth",
-                        help='path to the network')
     parser.add_argument("--lr", type=float, default=1e-2,
                         help='learning rate')
     parser.add_argument("--sigma", type=float, default=5,
