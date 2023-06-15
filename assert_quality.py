@@ -2,7 +2,7 @@ import os
 import argparse
 import numpy as np
 import iio
-from skimage.measure import compare_ssim
+from skimage.metrics import structural_similarity
 
 def psnr(img1, img2, peak=1):
     '''
@@ -12,11 +12,11 @@ def psnr(img1, img2, peak=1):
     return (10*np.log10(peak**2 / np.mean(x**2)))
 
 def assert_quality(**args):
-    imres = iio.read(args['input']).squeeze().astype(np.float)
-    imref = iio.read(args['ref']).squeeze().astype(np.float)
+    imres = iio.read(args['input']).squeeze().astype(np.float32)
+    imref = iio.read(args['ref']).squeeze().astype(np.float32)
 
     quant = psnr(imres, imref, 255.)
-    quant_ssim = compare_ssim(imres, imref, data_range=255., multichannel=True)
+    quant_ssim = structural_similarity(imres, imref, data_range=255., channel_axis=-1)
     print(quant, quant_ssim)
 
 if __name__ == "__main__":

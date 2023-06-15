@@ -78,10 +78,10 @@ def warp(x, p, scale=1):
 
     B, C, H, W = x.size()
     # mesh grid 
-    xx = torch.arange(0, scale*W).view(1,-1).repeat(np.round(scale*H).astype(np.int),1)
-    yy = torch.arange(0, scale*H).view(-1,1).repeat(1,np.round(scale*W).astype(np.int))
-    xx = xx.view(1,1,np.round(scale*H).astype(np.int),np.round(scale*W).astype(np.int)).repeat(B,1,1,1).float()
-    yy = yy.view(1,1,np.round(scale*H).astype(np.int),np.round(scale*W).astype(np.int)).repeat(B,1,1,1).float()
+    xx = torch.arange(0, scale*W).view(1,-1).repeat(np.round(scale*H).astype(int),1)
+    yy = torch.arange(0, scale*H).view(-1,1).repeat(1,np.round(scale*W).astype(int))
+    xx = xx.view(1,1,np.round(scale*H).astype(int),np.round(scale*W).astype(int)).repeat(B,1,1,1).float()
+    yy = yy.view(1,1,np.round(scale*H).astype(int),np.round(scale*W).astype(int)).repeat(B,1,1,1).float()
 
     # Center the new grid
     xx -= (scale-1)/2

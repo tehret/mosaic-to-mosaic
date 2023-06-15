@@ -27,7 +27,7 @@ import tifffile
 from scipy.ndimage.morphology import binary_dilation
 import time
 import iio as piio
-from skimage.measure import compare_ssim
+from skimage.metrics import structural_similarity
 
 import demosaic.modules as modules
 import demosaic.converter as converter
@@ -126,10 +126,10 @@ class WarpedLoss(nn.Module):
         def warp(self, x, p, scale=1):
             B, C, H, W = x.size()
             # mesh grid 
-            xx = torch.arange(0, scale*W).view(1,-1).repeat(np.round(scale*H).astype(np.int),1)
-            yy = torch.arange(0, scale*H).view(-1,1).repeat(1,np.round(scale*W).astype(np.int))
-            xx = xx.view(1,1,np.round(scale*H).astype(np.int),np.round(scale*W).astype(np.int)).repeat(B,1,1,1).float()
-            yy = yy.view(1,1,np.round(scale*H).astype(np.int),np.round(scale*W).astype(np.int)).repeat(B,1,1,1).float()
+            xx = torch.arange(0, scale*W).view(1,-1).repeat(np.round(scale*H).astype(int),1)
+            yy = torch.arange(0, scale*H).view(-1,1).repeat(1,np.round(scale*W).astype(int))
+            xx = xx.view(1,1,np.round(scale*H).astype(int),np.round(scale*W).astype(int)).repeat(B,1,1,1).float()
+            yy = yy.view(1,1,np.round(scale*H).astype(int),np.round(scale*W).astype(int)).repeat(B,1,1,1).float()
 
             scale = 2
             # Rescale the grid to match the input image
@@ -247,7 +247,7 @@ def blind_denoising(**args):
         for idx2 in range(args['frames']):
             if idx1 != idx2:
                 # read the two images
-                im1 = piio.read(args['input'] % idx1).squeeze().astype(np.float)
+                im1 = piio.read(args['input'] % idx1).squeeze().astype(np.float32)
                 if len(im1.shape) < 4:
                     im1 = np.expand_dims(im1, 0)
                     im1 = np.expand_dims(im1, 0)
@@ -261,7 +261,7 @@ def blind_denoising(**args):
                 im1 = torch.Tensor(im1).cuda().repeat(1, 3, 1, 1)
                 curr_frame_var,_ = rgb2bayer(im1)
 
-                im2 = piio.read(args['input'] % idx2).squeeze().astype(np.float)
+                im2 = piio.read(args['input'] % idx2).squeeze().astype(np.float32)
                 if len(im2.shape) < 4:
                     im2 = np.expand_dims(im2, 0)
                     im2 = np.expand_dims(im2, 0)
@@ -296,7 +296,7 @@ def blind_denoising(**args):
                     optimizer.step()
 
     # Estimate the quality after overfitting
-    noisy = piio.read(args['input'] % 0).squeeze().astype(np.float)
+    noisy = piio.read(args['input'] % 0).squeeze().astype(np.float32)
     if len(noisy.shape) < 4:
         noisy = np.expand_dims(noisy, 0)
         noisy = np.expand_dims(noisy, 0)
@@ -319,9 +319,9 @@ def blind_denoising(**args):
     out = out.cpu().numpy().transpose(2,3,1,0).squeeze().clip(0,1)
 
     if args['ref'] is not None:
-        ref = piio.read(args['ref']).squeeze().astype(np.float) / 255.
+        ref = piio.read(args['ref']).squeeze().astype(np.float32) / 255.
         quant_psnr = psnr(ref, out)
-        quant_ssim = compare_ssim(ref, out, data_range=1., multichannel=True)
+        quant_ssim = structural_similarity(ref, out, data_range=1., channel_axis=-1)
         print(quant_psnr, quant_ssim)
 
     if args['real']:

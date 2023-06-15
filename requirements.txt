@@ -1,7 +1,7 @@
-scikit-image
-numpy
-torch
-tqdm
-torchvision
-setproctitle
-iio
+scikit-image==0.21.0
+numpy==1.24.3
+torch==2.0.1
+tqdm==4.65.0
+torchvision==0.15.2
+setproctitle==1.3.2
+iio==16
