@@ -95,6 +95,9 @@ double *iio_read_image_double(const char *fname, int *w, int *h);
 double *iio_read_image_double_vec(const char *fname, int *w, int *h, int *pd);
 double *iio_read_image_double_split(const char *fname, int *w, int *h, int *pd);
 
+int *iio_read_image_int(const char *fname, int *w, int *h);
+int *iio_read_image_int_vec(const char *fname, int *w, int *h, int *pd);
+int *iio_read_image_int_split(const char *fname, int *w, int *h, int *pd);
 
 // All these functions are boring  variations, and they are defined at the
 // end of this file.  More interesting are the two following general
@@ -176,6 +179,7 @@ void iio_write_image_float           (char*, float*        , int, int     );
 void iio_write_image_double          (char*, double*       , int, int     );
 void iio_write_image_int             (char*, int*          , int, int     );
 void iio_write_image_int_vec         (char*, int*          , int, int, int);
+void iio_write_image_int_split       (char*, int*          , int, int, int);
 void iio_write_image_uint8_vec       (char*, uint8_t*      , int, int, int);
 void iio_write_image_uint8_split     (char*, uint8_t*      , int, int, int);
 void iio_write_image_uint16_vec      (char*, uint16_t*     , int, int, int);
@@ -208,5 +212,8 @@ void iio_save_image_uint8_matrix(char *f, unsigned char **x, int w, int h);
 // (w, h; 1 float) => tiff, pfm
 // (w, h; 3 float) => tiff, pfm
 
+// convenience wrapper for free (to avoid need to inlcude stdlib.h)
+void iio_free(void*);
 
 #endif//IIO_H
+
